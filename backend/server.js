@@ -13,6 +13,20 @@ app.get("/", (req, res) => {
     res.send("Server is ready!")
 })
 
+// API request to get all products
+app.get("/api/products", async (req, res) => {
+
+    try {
+        const products = await Product.find({}) // Finds all the products
+        res.status(200).json({success: true, data: products})
+    } catch (error) {
+        console.log("Error in fetching all the products:", error.message)
+        res.status(500).json({success: false, message: "Server Error"})
+    }
+
+    
+})
+
 // API request to create a product
 app.post("/api/products", async (req, res) => {
     const product = req.body; // user will send this data
