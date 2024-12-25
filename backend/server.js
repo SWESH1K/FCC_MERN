@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
     res.send("Server is ready!")
 })
 
+// API request to create a product
 app.post("/api/products", async (req, res) => {
     const product = req.body; // user will send this data
 
@@ -29,6 +30,21 @@ app.post("/api/products", async (req, res) => {
     } catch (error) {
         res.error("Error in creating product:", error.message)
         res.status(500).json({success: false, message: "Server Error"})
+    }
+
+})
+
+// API request to delete a product
+app.delete("/api/products/:id", async (req, res) => {
+    const {id} = req.params; 
+
+    try {
+        await Product.findByIdAndDelete(id)
+        console.log(`Product(id:${id}) has been deleted!`)
+        res.status(200).json({success: true, message: `Product with id:${id} is deleted successfully.`})
+    } catch (error) {
+        console.log(`Product(id:${id}) not found!`)
+        res.status(404).json({success: false, message: "Product not found!"})
     }
 
 })
